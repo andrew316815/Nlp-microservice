@@ -17,7 +17,7 @@ import pandas as pd
 
 """## Просмотр датасета"""
 
-df = pd.read_csv('dataset_service.tsv', sep='\t', comment='#', header=None)
+df = pd.read_csv('application/dataset_service.tsv', sep='\t', comment='#', header=None)
 df.head()
 
 SEED = 2022
@@ -63,10 +63,10 @@ LABEL = data.LabelField(dtype=torch.float)
 
 fields = [(None, None), ('text', TEXT), (None, None), ('label', LABEL)]
 
-training_data = data.TabularDataset(path = 'dataset_service.tsv', fields = fields, format = 'tsv', skip_header = True)
+training_data = data.TabularDataset(path ='application/dataset_service.tsv', fields = fields, format ='tsv', skip_header = True)
 
 #print preprocessed text
-print(vars(training_data.examples[0]))
+# print(vars(training_data.examples[0]))
 
 """## Разделение данных на тренировочные и тестовые"""
 
@@ -81,7 +81,7 @@ train_data, valid_data = training_data.split(split_ratio=0.7,
 
 import torchtext.vocab as vocab
 
-custom_embeddings = vocab.Vectors(name = 'vectors.txt')
+custom_embeddings = vocab.Vectors(name='application/vectors.txt')
 
 TEXT.build_vocab(train_data, min_freq=5, vectors=custom_embeddings, max_size=15279)
 LABEL.build_vocab(train_data)
@@ -93,13 +93,13 @@ print("Size of TEXT vocabulary:",len(TEXT.vocab))
 print("Size of LABEL vocabulary:",len(LABEL.vocab))
 
 #Commonly used words
-print(TEXT.vocab.freqs.most_common(10))  
+# print(TEXT.vocab.freqs.most_common(10))
 
 #Word dictionary
-print(TEXT.vocab.stoi)   
+# print(TEXT.vocab.stoi)
 
 #Label dictionary
-print(LABEL.vocab.stoi)
+# print(LABEL.vocab.stoi)
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  
 
@@ -180,7 +180,7 @@ model = classifier(size_of_vocab, embedding_dim, num_hidden_nodes,num_output_nod
 
 """## Информация о модели"""
 
-print(model)
+# print(model)
 
 def count_parameters(model):
     return sum(p.numel() for p in model.parameters() if p.requires_grad)
@@ -300,8 +300,9 @@ def evaluate(model, iterator, criterion):
 """## Загрузка модели"""
 
 #load weights
-model.load_state_dict(torch.load('model.pt'));
-model.eval();
+model.load_state_dict(torch.load('application/model.pt'))
+model.eval()
+
 
 def predict(model, sentences):
     predicts = []
@@ -323,4 +324,4 @@ def predict(model, sentences):
 
 """## Предсказание"""
 
-print('result: ', predict(model, ['ich hasse diese Welt', 'Ich habe gute Laune' ] ))
+# print('result: ', predict(model, ['ich hasse diese Welt', 'Ich habe gute Laune' ]))
