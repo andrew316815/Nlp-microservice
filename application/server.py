@@ -3,10 +3,12 @@ from flask import request
 from waitress import serve
 
 print('Initializing model...')
-from text_classification import model, predict
+from model_initialization import model, predict
 print('Initialization completed.')
 
+print("Starting server...")
 app = Flask(__name__)
+print("Server started.")
 
 
 @app.route("/api/label", methods=['POST'])
